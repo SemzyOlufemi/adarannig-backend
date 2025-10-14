@@ -1,0 +1,6 @@
+EMAIL_HOST=smtp-relay.brevo.com
+EMAIL_PORT=587
+EMAIL_USER=adarannigltd@gmail.com
+EMAIL_PASS=xsmtpsib-c4ba0a68666c71df51a931d046663da522e0b483eda8985ed5f2be34b268415c-prnQIt0KA31RFcky
+EMAIL_TO=adarannigltd@gmail.com
+PORT=5000

@@ -1,20 +1,52 @@
 import express from "express";
 import cors from "cors";
+import nodemailer from "nodemailer";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Example test route
 app.get("/", (req, res) => {
   res.json({ message: "Backend connected successfully on Render!" });
 });
 
-// Contact route (you can add nodemailer here)
-app.post("/contact", (req, res) => {
-  res.json({ message: "Contact form received successfully!" });
+// 📧 Contact form route
+app.post("/contact", async (req, res) => {
+  const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ success: false, message: "All fields required" });
+  }
+
+  // Configure your email transporter
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "adarannigltd@gmail.com", // your company email
+      pass: "utzkytbqrnzetruq", // ⚠️ not your normal Gmail password
+    },
+  });
+
+  const mailOptions = {
+    from: email,
+    to: "adarannigltd@gmail.com",
+    subject: `New Contact Message from ${name}`,
+    text: `
+      Name: ${name}
+      Email: ${email}
+      Message: ${message}
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ success: true, message: "Message sent successfully!" });
+  } catch (error) {
+    console.error("Email sending error:", error);
+    res.status(500).json({ success: false, message: "Error sending message" });
+  }
 });
 
-// Render will assign a dynamic port
+// Render port
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

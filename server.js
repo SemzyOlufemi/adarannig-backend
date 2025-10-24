@@ -19,13 +19,16 @@ app.post("/contact", async (req, res) => {
   }
 
   // Configure your email transporter
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "adarannigltd@gmail.com", // your company email
-      pass: "utzkytbqrnzetruq", // ⚠️ not your normal Gmail password
-    },
-  });
+ const transporter = nodemailer.createTransport({
+  host: "smtp-relay.brevo.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER, // from Render Environment
+    pass: process.env.EMAIL_PASS, // from Render Environment
+  },
+});
+
 
   const mailOptions = {
     from: email,
